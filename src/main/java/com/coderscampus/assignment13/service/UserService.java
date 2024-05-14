@@ -42,6 +42,7 @@ public class UserService {
     }
 
     public Set<User> findAll() {
+
         return userRepo.findAllUsersWithAccountsAndAddresses();
     }
 
@@ -67,7 +68,12 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public User save(User user) {
+        return userRepo.save(user);
+    }
+
     public void delete(Long userId) {
+
         userRepo.deleteById(userId);
     }
 }
