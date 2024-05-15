@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.Set;
 
 import com.coderscampus.assignment13.domain.Address;
+import com.coderscampus.assignment13.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.UserService;
@@ -20,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AddressService addressService;
 
 
     @GetMapping("/register")
@@ -32,7 +32,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String postCreateUser(User user) {
-        userService.save(user);
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
@@ -51,15 +51,43 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getOneUser(ModelMap model, @PathVariable Long userId) {
         User user = userService.findById(userId);
+        Address address = user.getAddress();
         model.put("users", Arrays.asList(user));
         model.put("user", user);
+        model.put("address", address);
         return "users";
     }
 
     @PostMapping("/users/{userId}")
-    public String postOneUser(@ModelAttribute User user) {
-        userService.save(user);
-        return "redirect:/users/" + user.getUserId();
+    public String postOneUser(User user, Address address) throws Exception {
+        User existingUser = userService.findById(user.getUserId());
+
+        if (existingUser == null) {
+            // Handle user not found case, maybe throw an exception or return an error response
+            throw new Exception ("User not found with id: " + user.getUserId());
+        }
+
+        // Update user details
+        existingUser.setUsername(user.getUsername());
+        existingUser.setName(user.getName());
+
+        if (!user.getPassword().isEmpty()) {
+            existingUser.setPassword(user.getPassword());
+        }
+
+        Address existingAddress = existingUser.getAddress();
+
+        if (existingAddress != null) {
+            addressService.saveAllAddress(existingAddress,address);
+            addressService.saveAddress(existingAddress);
+        } else {
+            existingUser.setAddress(address);
+            addressService.saveAddress(address);
+        }
+
+        userService.saveUser(existingUser);
+
+        return "redirect:/users/" + existingUser.getUserId();
     }
 
     @PostMapping("/users/{userId}/delete")
@@ -68,9 +96,5 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users/{userId}/accouts/{accoutId}")
-    public String getAccount(@PathVariable Long userId, @PathVariable Long accoutId) {
-        User user = userService.findById(userId);
-        return "redirect:/users/" + user.getUserId() + "/" + accoutId;
-    }
+
 }

@@ -1,0 +1,34 @@
+package com.coderscampus.assignment13.service;
+import com.coderscampus.assignment13.domain.Address;
+import com.coderscampus.assignment13.domain.User;
+import com.coderscampus.assignment13.repository.AddressRepository;
+import com.coderscampus.assignment13.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AddressService {
+
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private UserService userService;
+
+    public Address saveAddress(Address address) {
+        return addressRepository.save(address);
+    }
+
+    public void saveAllAddress(Address existingAddress, Address newAddress) {
+        existingAddress.setAddressLine1(newAddress.getAddressLine1());
+        existingAddress.setAddressLine2(newAddress.getAddressLine2());
+        existingAddress.setCity(newAddress.getCity());
+        existingAddress.setRegion(newAddress.getRegion());
+        existingAddress.setCountry(newAddress.getCountry());
+        existingAddress.setZipCode(newAddress.getZipCode());
+
+        addressRepository.save(existingAddress);
+
+    }
+
+
+}
