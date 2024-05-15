@@ -59,27 +59,14 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}")
-    public String postOneUser(User user, Address address) throws Exception {
+    public String postOneUser(User user, Address address) {
         User existingUser = userService.findById(user.getUserId());
-
-        if (existingUser == null) {
-            throw new Exception("User not found with id: " + user.getUserId());
-        }
 
         existingUser.setUsername(user.getUsername());
         existingUser.setName(user.getName());
-
-        if (!user.getPassword().isEmpty()) {
-            existingUser.setPassword(user.getPassword());
-        }
         Address existingAddress = existingUser.getAddress();
-        if (existingAddress != null) {
-            addressService.saveAllAddress(existingAddress, address);
-            addressService.saveAddress(existingAddress);
-        } else {
-            existingUser.setAddress(address);
-            addressService.saveAddress(address);
-        }
+        addressService.saveAllAddress(existingAddress, address);
+        addressService.saveAddress(existingAddress);
         userService.saveUser(existingUser);
         return "redirect:/users/" + existingUser.getUserId();
     }

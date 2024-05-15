@@ -73,13 +73,16 @@ public class User {
         this.accounts = accounts;
     }
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
+        if (address != null) {
+            address.setUser(this);
+        }
     }
 
     @Override

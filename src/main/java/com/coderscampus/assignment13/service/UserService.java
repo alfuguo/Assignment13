@@ -56,34 +56,11 @@ public class UserService {
         return userOpt.orElse(new User());
     }
 
-//    public User saveUser(User updatedUser) {
-//        User existingUser = userRepo.findById(updatedUser.getUserId()).orElse(new User());
-//        Address existingAddress = existingUser.getAddress();
-//        if (existingAddress == null) {
-//            existingAddress = new Address();
-//            existingUser.setAddress(existingAddress);
-//        }
-//        }
-
-
-
 
     public User saveUser(User user) {
         return userRepo.save(user);
     }
 
-//    public User updateAddress(User existingUser, User updatedUser) {
-//        Address newAddress = updatedUser.getAddress();
-//        if (newAddress != null) {
-//            existingUser.setAddress(newAddress);
-//        }
-//
-//
-//        addressService.saveAddress(existingUser);
-//
-//        return userRepo.save(existingUser);
-//
-//    }
 
     public void delete(Long userId) {
 

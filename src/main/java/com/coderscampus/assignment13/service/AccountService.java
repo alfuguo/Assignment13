@@ -31,7 +31,7 @@ public class AccountService {
     }
 
 
-    public Account createAccountForUser(Long accountId  , Optional<String> accountName) {
+    public Account createAccountForUser(Long accountId, Optional<String> accountName) {
         User user = userRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + accountId));
 
