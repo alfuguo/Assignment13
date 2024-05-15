@@ -1,5 +1,8 @@
 package com.coderscampus.assignment13.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +12,11 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Address {
+    @Id
     private Long userId;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
     private String addressLine1;
     private String addressLine2;
@@ -18,7 +25,7 @@ public class Address {
     private String country;
     private String zipCode;
 
-    @Id
+
     public Long getUserId() {
         return userId;
     }
@@ -27,9 +34,7 @@ public class Address {
         this.userId = userId;
     }
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
+
     public User getUser() {
         return user;
     }
@@ -90,5 +95,19 @@ public class Address {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "userId=" + userId +
+                ", user=" + user +
+                ", addressLine1='" + addressLine1 + '\'' +
+                ", addressLine2='" + addressLine2 + '\'' +
+                ", city='" + city + '\'' +
+                ", region='" + region + '\'' +
+                ", country='" + country + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
     }
 }

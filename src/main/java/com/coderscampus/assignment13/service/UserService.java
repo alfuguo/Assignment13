@@ -58,6 +58,8 @@ public class UserService {
 
 
     public User saveUser(User user) {
+//        Address address = new Address();
+//        user.setAddress(address);
         return userRepo.save(user);
     }
 
@@ -65,5 +67,16 @@ public class UserService {
     public void delete(Long userId) {
 
         userRepo.deleteById(userId);
+    }
+    public User postOneUser(Long userId, User user, Address address){
+        User existingUser = findById(userId);
+        existingUser.setUsername(user.getUsername());
+        existingUser.setName(user.getName());
+        Address existingAddress = existingUser.getAddress();
+        Address updatedAddress = addressService.saveAllAddress(existingAddress, address);
+        existingUser.setAddress(updatedAddress);
+        //addressService.saveAddress(existingAddress);
+        saveUser(existingUser);
+        return existingUser;
     }
 }

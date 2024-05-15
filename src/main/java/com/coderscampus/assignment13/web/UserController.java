@@ -59,16 +59,13 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}")
-    public String postOneUser(User user, Address address) {
-        User existingUser = userService.findById(user.getUserId());
+    public String postOneUser(@PathVariable Long userId, User user, ModelMap model) {
 
-        existingUser.setUsername(user.getUsername());
-        existingUser.setName(user.getName());
-        Address existingAddress = existingUser.getAddress();
-        addressService.saveAllAddress(existingAddress, address);
-        addressService.saveAddress(existingAddress);
-        userService.saveUser(existingUser);
-        return "redirect:/users/" + existingUser.getUserId();
+        User postedUser = userService.postOneUser(userId, user, user.getAddress());
+        model.addAttribute("user", postedUser);
+        model.addAttribute("address", postedUser.getAddress());
+
+        return "redirect:/users/" + postedUser.getUserId();
     }
 
     @PostMapping("/users/{userId}/delete")

@@ -18,16 +18,20 @@ public class AddressService {
         return addressRepository.save(address);
     }
 
-    public void saveAllAddress(Address existingAddress, Address newAddress) {
+    public Address saveAllAddress(Address existingAddress, Address newAddress) {
+        if (existingAddress == null) {
+            existingAddress = new Address();
+        }
+
         existingAddress.setAddressLine1(newAddress.getAddressLine1());
         existingAddress.setAddressLine2(newAddress.getAddressLine2());
         existingAddress.setCity(newAddress.getCity());
         existingAddress.setRegion(newAddress.getRegion());
         existingAddress.setCountry(newAddress.getCountry());
         existingAddress.setZipCode(newAddress.getZipCode());
-
-        addressRepository.save(existingAddress);
-
+        System.out.println("AAAAAAAAAddress saved" + existingAddress);
+        //addressRepository.save(existingAddress);
+        return existingAddress;
     }
 
 
