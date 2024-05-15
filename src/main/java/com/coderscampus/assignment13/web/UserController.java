@@ -63,30 +63,24 @@ public class UserController {
         User existingUser = userService.findById(user.getUserId());
 
         if (existingUser == null) {
-            // Handle user not found case, maybe throw an exception or return an error response
-            throw new Exception ("User not found with id: " + user.getUserId());
+            throw new Exception("User not found with id: " + user.getUserId());
         }
 
-        // Update user details
         existingUser.setUsername(user.getUsername());
         existingUser.setName(user.getName());
 
         if (!user.getPassword().isEmpty()) {
             existingUser.setPassword(user.getPassword());
         }
-
         Address existingAddress = existingUser.getAddress();
-
         if (existingAddress != null) {
-            addressService.saveAllAddress(existingAddress,address);
+            addressService.saveAllAddress(existingAddress, address);
             addressService.saveAddress(existingAddress);
         } else {
             existingUser.setAddress(address);
             addressService.saveAddress(address);
         }
-
         userService.saveUser(existingUser);
-
         return "redirect:/users/" + existingUser.getUserId();
     }
 
