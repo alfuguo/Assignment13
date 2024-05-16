@@ -39,6 +39,7 @@ public class AccountService {
         }
 
         Account account = new Account();
+        account.setAccountName("New Account");
         user.getAccounts().add(account);
         account.getUsers().add(user);
 

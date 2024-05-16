@@ -1,8 +1,10 @@
 package com.coderscampus.assignment13.web;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
+import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +54,15 @@ public class UserController {
     public String getOneUser(ModelMap model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         Address address = user.getAddress();
+        List<Account> accounts = user.getAccounts();
         model.put("users", Arrays.asList(user));
         model.put("user", user);
         model.put("address", address);
+        model.put("accounts", accounts);
+        for (Account account : accounts) {
+            System.out.println("accounts: " + account.getAccountName());
+        }
+
         return "users";
     }
 

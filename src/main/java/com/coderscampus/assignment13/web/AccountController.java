@@ -41,11 +41,12 @@ public class AccountController {
     }
 
     @PostMapping("/users/{userId}/accounts/{accountId}")
-    public String updateAccountName(@PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute Account account) {
+    public String updateAccountName(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute Account account) {
         Account existingAccount = accountService.findById(accountId);
         existingAccount.setAccountName(account.getAccountName());
         accountService.save(existingAccount);
-        userService.saveUser(userService.findById(userId));
+        User updatedUser = userService.saveUser(userService.findById(userId));
+        model.addAttribute("user", updatedUser);
         return "redirect:/users/" + userId + "/accounts/" + accountId;
     }
 }
