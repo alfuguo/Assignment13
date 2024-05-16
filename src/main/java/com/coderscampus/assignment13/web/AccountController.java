@@ -22,12 +22,16 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-
+    @PostMapping("users/{userId}/accounts")
+    public String postOneAccount (@PathVariable Long userId) {
+        accountService.saveAccount(userId);
+        return "redirect:/users/" + userId;
+    }
 
     @GetMapping("/user/{userId}/accounts/{accountId}")
-    public String viewOneUserAccount (ModelMap model, @PathVariable Long userId, @PathVariable Long accountId) {
-       User user = userService .findById(userId) ;
-       Account account = accountService.findById(accountId);
+    public String viewOneUserAccount (ModelMap model, @PathVariable Long accountId) {
+        Account account = accountService.findById(accountId);
+        User user = account.getUsers().get(0);
         model.addAttribute("user", user);
         model.addAttribute("account", account);
 
@@ -35,28 +39,14 @@ public class AccountController {
     }
 
     @PostMapping("/user/{userId}/accounts/{accountId}")
-    public String updateAccountName (@PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute Account account) {
-        Account currentAccount = accountService.findById(accountId);
-        currentAccount.setAccountName(account.getAccountName());
-        accountService.save(currentAccount);
-
+    public String updateAccountName (@PathVariable Long userId, @PathVariable Long accountId, Account account) {
+        account.setAccountName(account.getAccountName());
+        accountService.save(account);
         userService.saveUser(userService.findById(userId));
-
-        System.out.println(account.getAccountName());
         return "redirect:/users/" + userId + "/accounts/" + accountId;
     }
 
 
 
-    @PostMapping("users/{userId}/accounts")
-    public String postOneAccount (@PathVariable Long userId, @ModelAttribute Account account) {
-        User users = userService.findById(userId);
-        account.setUsers(Collections.singletonList(users));
-        users.getAccounts().add(account);
-        userService.saveUser(users);
-        accountService.save(account);
 
-
-        return "redirect:/users/" + userId;
-    }
 }

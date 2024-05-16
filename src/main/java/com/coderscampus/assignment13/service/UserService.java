@@ -58,8 +58,6 @@ public class UserService {
 
 
     public User saveUser(User user) {
-//        Address address = new Address();
-//        user.setAddress(address);
         return userRepo.save(user);
     }
 
@@ -75,7 +73,6 @@ public class UserService {
         Address existingAddress = existingUser.getAddress();
         Address updatedAddress = addressService.saveAllAddress(existingAddress, address);
         existingUser.setAddress(updatedAddress);
-        //addressService.saveAddress(existingAddress);
         saveUser(existingUser);
         return existingUser;
     }

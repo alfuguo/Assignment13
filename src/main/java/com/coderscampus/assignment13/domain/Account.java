@@ -8,13 +8,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "accounts")
 public class Account {
-    private Long accountId;
-    private String accountName;
-    private List<Transaction> transactions = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long accountId;
+    private String accountName;
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions = new ArrayList<>();
+    @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    private List<User> users = new ArrayList<>();
+
+
     public Long getAccountId() {
         return accountId;
     }
@@ -32,7 +35,7 @@ public class Account {
         this.accountName = accountName;
     }
 
-    @OneToMany(mappedBy = "account")
+
     public List<Transaction> getTransactions() {
         return transactions;
     }
@@ -41,12 +44,22 @@ public class Account {
         this.transactions = transactions;
     }
 
-    @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     public List<User> getUsers() {
         return users;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId=" + accountId +
+                ", accountName='" + accountName + '\'' +
+                ", transactions=" + transactions +
+
+                '}';
     }
 }

@@ -18,11 +18,18 @@ import java.util.Optional;
 public class AccountService {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
 
     public Account save(Account account) {
         return accountRepository.save(account);
+    }
+
+    public void delete(Long accountId) {
+        accountRepository.deleteById(accountId);
     }
 
     public Account findById(Long accountId) {
@@ -30,33 +37,11 @@ public class AccountService {
         return account.orElse(new Account());
     }
 
-
-    public Account createAccountForUser(Long accountId, Optional<String> accountName) {
-        User user = userRepository.findById(accountId)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with ID: " + accountId));
-
+    public Account saveAccount(Long userId) {
+        User user = userService.findById(userId);
         Account account = new Account();
-        account.setAccountName(accountName.orElse("Default Account Name"));
-
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        account.setUsers(users);
-
-        return accountRepository.save(account);
-    }
-
-    public Account updateAccountNameById(Long accountId, String accountName) {
-        Account account = accountRepository.findById(accountId)
-                .map(a -> {
-                    a.setAccountName(accountName != null && !accountName.isBlank() ? accountName : accountName);
-                    return a;
-                })
-                .orElseGet(() -> {
-                    Account newAccount = new Account();
-                    newAccount.setAccountName(accountName != null && !accountName.isBlank() ? accountName : accountName);
-                    return newAccount;
-                });
-
+        user.getAccounts().add(account);
+        account.getUsers().add(user);
         return accountRepository.save(account);
     }
 }
