@@ -28,7 +28,6 @@ public class User {
     private Address address;
 
 
-
     public Long getUserId() {
         return userId;
     }

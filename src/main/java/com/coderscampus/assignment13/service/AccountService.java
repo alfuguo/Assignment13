@@ -11,21 +11,24 @@ import java.util.Optional;
 
 @Service
 public class AccountService {
-    @Autowired
+    final
     AccountRepository accountRepository;
-    @Autowired
+    final
     UserRepository userRepository;
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, UserService userService) {
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
 
 
     public Account save(Account account) {
         return accountRepository.save(account);
     }
 
-    public void delete(Long accountId) {
-        accountRepository.deleteById(accountId);
-    }
 
     public Account findById(Long accountId) {
         Optional<Account> account = accountRepository.findById(accountId);

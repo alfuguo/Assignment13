@@ -17,33 +17,14 @@ import com.coderscampus.assignment13.repository.UserRepository;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private AccountRepository accountRepo;
-    @Autowired
-    private AddressService addressService;
-    @Autowired
-    private AccountService accountService;
+    private final UserRepository userRepo;
 
-    public List<User> findByUsername(String username) {
-        return userRepo.findByUsername(username);
-    }
+    private final AddressService addressService;
 
-    public List<User> findByNameAndUsername(String name, String username) {
-        return userRepo.findByNameAndUsername(name, username);
-    }
-
-    public List<User> findByCreatedDateBetween(LocalDate date1, LocalDate date2) {
-        return userRepo.findByCreatedDateBetween(date1, date2);
-    }
-
-    public User findExactlyOneUserByUsername(String username) {
-        List<User> users = userRepo.findExactlyOneUserByUsername(username);
-        if (users.size() > 0)
-            return users.get(0);
-        else
-            return new User();
+    @Autowired
+    public UserService(UserRepository userRepo, AddressService addressService) {
+        this.userRepo = userRepo;
+        this.addressService = addressService;
     }
 
     public Set<User> findAll() {
@@ -66,7 +47,8 @@ public class UserService {
 
         userRepo.deleteById(userId);
     }
-    public User postOneUser(Long userId, User user, Address address){
+
+    public User postOneUser(Long userId, User user, Address address) {
         User existingUser = findById(userId);
         existingUser.setUsername(user.getUsername());
         existingUser.setName(user.getName());

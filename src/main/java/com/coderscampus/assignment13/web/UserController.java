@@ -18,10 +18,12 @@ import com.coderscampus.assignment13.service.UserService;
 @Controller
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AddressService addressService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @GetMapping("/register")

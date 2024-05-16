@@ -30,7 +30,6 @@ public class AccountController {
     }
 
 
-
     @GetMapping("/users/{userId}/accounts/{accountId}")
     public String viewOneUserAccount(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId) {
         Account account = accountService.findById(accountId);
