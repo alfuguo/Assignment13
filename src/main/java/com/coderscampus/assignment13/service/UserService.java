@@ -16,9 +16,7 @@ import com.coderscampus.assignment13.repository.UserRepository;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepo;
-
     private final AddressService addressService;
 
     @Autowired

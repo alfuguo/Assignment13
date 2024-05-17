@@ -6,7 +6,6 @@ import com.coderscampus.assignment13.repository.AccountRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -56,8 +55,6 @@ public class AccountService {
         }
         System.out.println("Account details: " + newAccountDetails);
         existingAccount.setAccountName(newAccountDetails.getAccountName());
-//        User userToUpdate = userService.findById(userId);
-//        userService.saveUser(userToUpdate);
         return accountRepository.save(existingAccount);
     }
 }

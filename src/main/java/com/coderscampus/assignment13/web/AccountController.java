@@ -6,7 +6,6 @@ import com.coderscampus.assignment13.service.AccountService;
 import com.coderscampus.assignment13.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 
 public class AccountController {
+    private final UserService userService;
+    private final AccountService accountService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private AccountService accountService;
+    public AccountController(UserService userService, AccountService accountService) {
+        this.userService = userService;
+        this.accountService = accountService;
+    }
 
     @PostMapping("/users/{userId}/accounts")
     public String postOneAccount(@PathVariable Long userId, Model model) {
@@ -46,11 +48,7 @@ public class AccountController {
                                     @PathVariable Long userId,
                                     @PathVariable Long accountId,
                                     @ModelAttribute("account") Account newAccountDetails) {
-        Account updatedAccount = accountService.updateAccount(accountId,newAccountDetails,userId);
-
-
-    //
-//        model.addAttribute("user", updatedUser);
+        Account updatedAccount = accountService.updateAccount(accountId, newAccountDetails, userId);
         model.addAttribute("account", updatedAccount);
         return "redirect:/users/" + userId + "/accounts/" + accountId;
     }
