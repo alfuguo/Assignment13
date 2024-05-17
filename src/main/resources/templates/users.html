@@ -1,89 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-
 <head>
     <title>Users</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-
 <body>
-<h1>Users</h1>
+<!-- SVG background -->
+<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <defs>
+        <radialGradient id="Gradient1" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+            <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"/>
+            <stop offset="0%" stop-color="#ff0"/>
+            <stop offset="100%" stop-color="#ff00"/>
+        </radialGradient>
+        <radialGradient id="Gradient2" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+            <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"/>
+            <stop offset="0%" stop-color="#0ff"/>
+            <stop offset="100%" stop-color="#0ff0"/>
+        </radialGradient>
+        <radialGradient id="Gradient3" cx="50%" cy="50%" fx="50%" fy="50%" r=".5">
+            <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"/>
+            <stop offset="0%" stop-color="#f0f"/>
+            <stop offset="100%" stop-color="#f0f0"/>
+        </radialGradient>
+    </defs>
+    <rect x="0" y="0" width="100%" height="100%" fill="url(#Gradient1)">
+        <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"/>
+        <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="17s"
+                          repeatCount="indefinite"/>
+    </rect>
+    <rect x="0" y="0" width="100%" height="100%" fill="url(#Gradient2)">
+        <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"/>
+        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="18s"
+                          repeatCount="indefinite"/>
+    </rect>
+    <rect x="0" y="0" width="100%" height="100%" fill="url(#Gradient3)">
+        <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"/>
+        <animate attributeName="y" dur="26s" values="0%;25%;0%" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="19s"
+                          repeatCount="indefinite"/>
+    </rect>
+</svg>
 
-<div th:if="${#lists.size(users) == 1}">
-
-    <form th:action="@{/users/{userId}(userId=${user.userId})}" method="post">
-
-        <div>
-            Username: <input type="text" th:field="${user.username}"/>
+<div class="container">
+    <h1>Valued Customers</h1>
+    <div th:if="${#lists.size(users) == 1}" class="user-form">
+        <form th:action="@{/users/{userId}(userId=${user.userId})}" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" th:field="${user.username}"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" th:field="${user.password}"/>
+            </div>
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" th:field="${user.name}"/>
+            </div>
+            <div class="divider"></div>
+            <div class="form-group">
+                <label for="address1">Address Line 1:</label>
+                <input type="text" id="address1" th:field="${user.address.addressLine1}"/>
+            </div>
+            <div class="form-group">
+                <label for="address2">Address Line 2:</label>
+                <input type="text" id="address2" th:field="${user.address.addressLine2}"/>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" id="city" th:field="${user.address.city}"/>
+            </div>
+            <div class="form-group">
+                <label for="region">Region:</label>
+                <input type="text" id="region" th:field="${user.address.region}"/>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" id="country" th:field="${user.address.country}"/>
+            </div>
+            <div class="form-group">
+                <label for="zipCode">Zip Code:</label>
+                <input type="text" id="zipCode" th:field="${user.address.zipCode}"/>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" th:field="${user.userId}"/>
+                <input type="hidden" th:field="${user.accounts}"/>
+                <input type="submit" value="Update User Account"/>
+            </div>
+        </form>
+        <div class="form-actions">
+            <form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
+                <input type="submit" value="Delete User Account" class="delete-button"/>
+            </form>
         </div>
-        <div>
-            Password: <input type="password" th:field="${user.password}"/>
+        <div class="divider"></div>
+        <h2>Account Dashboard</h2>
+        <div class="accounts">
+            <div class="account-list">
+                <ul>
+                    <li th:each="account : ${user.accounts}">
+                        <a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
+                           th:text="${account.accountName}"></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div>
-            Full Name: <input type="text" th:field="${user.name}"/>
+        <div class="form-actions">
+            <form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="post" th:object="${user}">
+                <input type="submit" value="Create New Bank Account" class="create-button"/>
+            </form>
         </div>
-        <hr/>
-        <div>
-            Address Line 1: <input type="text" th:field="${user.address.addressLine1}">
+        <div class="back-link">
+            <a href="/users" class="back-button">Back to List</a>
         </div>
-        <div>
-            Address Line 2: <input type="text" th:field="${user.address.addressLine2}">
-        </div>
-        <div>
-            City: <input type="text" th:field="${user.address.city}">
-        </div>
-        <div>
-            Region: <input type="text" th:field="${user.address.region}">
-        </div>
-        <div>
-            Country: <input type="text" th:field="${user.address.country}">
-        </div>
-        <div>
-            Zip Code: <input type="text" th:field="${user.address.zipCode}">
-        </div>
-        <br>
-        <div>
-            <input type="hidden" th:field="${user.userId}"/>
-            <input type="hidden" th:field="${user.accounts}"/>
-            <input type="submit" value="Update User Account"/>
-        </div>
-    </form>
-    <form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
-        <input type="submit" value="Delete User Account"/>
-    </form>
-    <hr/>
-    <h2>Accounts</h2>
-
-    <div th:each="account : ${user.accounts}">
-    <span>
-        <a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
-           th:text="${account.accountName}"></a>
-    </span>
-
-
     </div>
-
-    <br/>
-
-    <form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="post" th:object="${user}">
-        <input type="submit" value="Create New Bank Account"/>
-    </form>
-
-    <br/>
-    <a href="/users">Back</a>
+    <div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}" class="user-list">
+        <a th:href="@{/users/{userId}(userId=${user.userId})}"><span th:text="${user.userId}"></span></a><br/>
+        <span th:text="${user.username}"></span><br/>
+        <span th:text="${user.name}"></span><br/>
+        <span th:text="${user.password}"></span>
+        <div class="user-accounts" th:each="account : ${user.accounts}">
+            <a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}">
+                <span th:text="${account.accountName}"></span>
+            </a>
+        </div>
+        <div class="divider"></div>
+    </div>
 </div>
 
-<div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
-    <a th:href="@{/users/{userId}(userId=${user.userId})}"><span th:text="${user.userId}"></span></a><br/>
-    <span th:text="${user.username}"></span><br/>
-    <span th:text="${user.name}"></span><br/>
-    <span th:text="${user.password}"></span>
-    <div th:each="account : ${user.accounts}">
-        <a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}">
-            <span th:text="${account.accountName}"></span> </a></div>
-
-
-    <hr/>
-</div>
 </body>
-
 </html>

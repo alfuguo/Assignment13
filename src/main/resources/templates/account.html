@@ -4,20 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${account.accountName}"></title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1 th:text="${account.accountName}"></h1>
-
-<div>
-    <form action="" method="post">
-        <div>
-            Account Name: <input type="text" th:field="${account.accountName}" th:value="${account.accountName}"/>
-        </div>
-        <input type="submit" value="Update User Account"/>
-    </form>
-</div>
-<div>
-    <a th:href="@{/users/{userId} (userId = ${user.userId})}">Back</a>
+<div class="container">
+    <h1 th:text="${account.accountName}"></h1>
+    <div class="account-form">
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="accountName" th:field="${account.accountName}" th:value="${account.accountName}"/>
+            </div>
+            <div class="form-actions">
+                <input type="submit" value="Update Account"/>
+            </div>
+        </form>
+    </div>
+    <div class="back-link">
+        <a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
+    </div>
 </div>
 
 </body>
