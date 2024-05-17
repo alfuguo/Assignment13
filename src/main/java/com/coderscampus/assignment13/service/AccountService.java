@@ -43,11 +43,10 @@ public class AccountService {
         }
         Account account = new Account();
         account.setAccountName("New Account");
-        user.getAccounts().add(account);
-        account.getUsers().add(user);
-
+        Account newAccount = accountRepository.save(account);
+        user.getAccounts().add(newAccount);
         userRepository.save(user);
-        return accountRepository.save(account);
+        return newAccount;
     }
 
     public Account updateAccount(Long accountId, Account newAccountDetails, Long userId) {
