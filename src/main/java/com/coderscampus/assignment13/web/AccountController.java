@@ -23,7 +23,7 @@ public class AccountController {
     @PostMapping("/users/{userId}/accounts")
     public String postOneAccount(@PathVariable Long userId, Model model) {
         User user = userService.findById(userId);
-        Account newAccount = accountService.saveAccount(userId);
+        Account newAccount = accountService.createNewAccount(userId);
         model.addAttribute("user", user);
         model.addAttribute("account", newAccount);
         return "redirect:/users/" + userId + "/accounts/" + newAccount.getAccountId();
@@ -31,7 +31,9 @@ public class AccountController {
 
 
     @GetMapping("/users/{userId}/accounts/{accountId}")
-    public String viewOneUserAccount(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId) {
+    public String viewOneUserAccount(ModelMap model,
+                                     @PathVariable Long userId,
+                                     @PathVariable Long accountId) {
         Account account = accountService.findById(accountId);
         User user = userService.findById(userId);
         model.addAttribute("user", user);
@@ -40,14 +42,17 @@ public class AccountController {
     }
 
     @PostMapping("/users/{userId}/accounts/{accountId}")
-    public String updateAccountName(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute("account") Account newAccountDetails) {
-        Account existingAccount = accountService.findById(accountId);
-        existingAccount.setAccountName(newAccountDetails.getAccountName());
-        Account updatedAccount = accountService.save(existingAccount);
-        User userToUpdate = userService.findById(userId);
-        userToUpdate.getAccounts().add(updatedAccount); // Use the managed instance (updatedAccount)
-        User updatedUser = userService.saveUser(userToUpdate);
-        model.addAttribute("user", updatedUser);
+    public String updateAccountName(ModelMap model,
+                                    @PathVariable Long userId,
+                                    @PathVariable Long accountId,
+                                    @ModelAttribute("account") Account newAccountDetails) {
+        Account updatedAccount = accountService.updateAccount(accountId,newAccountDetails,userId);
+
+
+//
+//        model.addAttribute("user", updatedUser);
+        model.addAttribute("account", updatedAccount);
         return "redirect:/users/" + userId + "/accounts/" + accountId;
     }
 }
+
