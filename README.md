@@ -1,4 +1,5 @@
-# Assignment 13 starter
+# Assignment 13 
+![Untitledvideo-MadewithClipchamp-ezgif com-optimize](https://github.com/alfuguo/Assignment13/assets/137233519/89c10963-5c71-419a-adca-dae1d5a82a83)
 
 To use this template:
 
