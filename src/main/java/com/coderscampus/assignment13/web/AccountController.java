@@ -44,7 +44,9 @@ public class AccountController {
         Account existingAccount = accountService.findById(accountId);
         existingAccount.setAccountName(account.getAccountName());
         accountService.save(existingAccount);
-        User updatedUser = userService.saveUser(userService.findById(userId));
+        User userToUpdate = userService.findById(userId);
+        userToUpdate.getAccounts().add(account);
+        User updatedUser = userService.saveUser(userToUpdate);
         model.addAttribute("user", updatedUser);
         return "redirect:/users/" + userId + "/accounts/" + accountId;
     }

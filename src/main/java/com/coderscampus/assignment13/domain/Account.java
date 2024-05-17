@@ -14,7 +14,7 @@ public class Account {
     private String accountName;
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions = new ArrayList<>();
-    @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.ALL})
     private List<User> users = new ArrayList<>();
 
 
