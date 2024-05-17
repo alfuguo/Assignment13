@@ -40,12 +40,12 @@ public class AccountController {
     }
 
     @PostMapping("/users/{userId}/accounts/{accountId}")
-    public String updateAccountName(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute Account account) {
+    public String updateAccountName(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute("account") Account newAccountDetails) {
         Account existingAccount = accountService.findById(accountId);
-        existingAccount.setAccountName(account.getAccountName());
-        accountService.save(existingAccount);
+        existingAccount.setAccountName(newAccountDetails.getAccountName());
+        Account updatedAccount = accountService.save(existingAccount);
         User userToUpdate = userService.findById(userId);
-        userToUpdate.getAccounts().add(account);
+        userToUpdate.getAccounts().add(updatedAccount); // Use the managed instance (updatedAccount)
         User updatedUser = userService.saveUser(userToUpdate);
         model.addAttribute("user", updatedUser);
         return "redirect:/users/" + userId + "/accounts/" + accountId;
