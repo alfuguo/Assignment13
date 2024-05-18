@@ -90,6 +90,8 @@ h2 {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .form-actions input:hover {
@@ -97,25 +99,6 @@ h2 {
     transform: scale(1.1);
 }
 
-.delete-button {
-    background-color: #dc3545;
-    margin-top: 10px;
-}
-
-.delete-button:hover {
-    background-color: #c82333;
-    transform: scale(1.1);
-}
-
-.create-button {
-    background-color: #28a745;
-    margin-top: 10px;
-}
-
-.create-button:hover {
-    background-color: #218838;
-    transform: scale(1.1);
-}
 
 .back-link {
     text-align: center;
@@ -151,7 +134,11 @@ h2 {
 }
 
 .account-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
+    max-width: 400px;
 }
 
 .account-list ul {
@@ -161,23 +148,32 @@ h2 {
 }
 
 .account-list li {
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .account-list a {
-    background-color: #f3f4f6;
-    color: #333;
-    padding: 10px 10px;
-    border-radius: 2px;
+    background-color: #ffffff;
+    color: #333333;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .account-list a:hover {
-    background-color: #d056f8;
-    transform: scale(1.05);
+    background-color: #ce8cfd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.account-list a i {
+    font-size: 20px;
+    color: #6b7280;
+}
 @media (max-width: 600px) {
     .container {
         padding: 15px;
@@ -189,7 +185,6 @@ h2 {
     }
 
     .form-actions input,
-    .delete-button,
     .create-button,
     .back-button {
         padding: 8px 15px;
